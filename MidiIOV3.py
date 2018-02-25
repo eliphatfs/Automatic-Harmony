@@ -16,7 +16,7 @@ time = 0
 name = input("Enter Name:")
 MyMIDI.addTrackName(track, time, name)
 MyMIDI.addTempo(track, time, 212)
-MyMIDI.addProgramChange(track, 0, 0, 48)  # 40 48 50
+MyMIDI.addProgramChange(track, 0, 0, 0)  # 40 48 50
 while True:
     time = 0
     sequence = input("Enter Sequence, Q To Quit: \n")
