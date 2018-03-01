@@ -44,11 +44,11 @@ namespace ConcordV3.Concord
                     else
                     {
                         ChordRegen r = new ChordRegen();
-                        string next = Progress1(progress, pitches[timePt], time[timePt]).Item1;
-                        ModifyHappiness(ref next);
+                        string next = happy >= sad ? Progress1(progress, pitches[timePt], time[timePt]).Item1 : Progress2(pitches[timePt]);
                         if (r.Regen(next)[pitches[timePt]] || (next.Length == 1 && Helper.RandomBoolean(happy)) || (next.Length == 2 && Helper.RandomBoolean(sad)))
                         {
                             progress.Add(next);
+                            ModifyHappiness(ref next);
                             result.Add(MakeChord(next, result, pitches[timePt]));
                             hasAdded = true;
                         }
@@ -58,10 +58,10 @@ namespace ConcordV3.Concord
                 {
                     ChordRegen r = new ChordRegen();
                     string next = Progress1(progress, pitches[timePt], time[timePt]).Item1;
-                    ModifyHappiness(ref next);
                     if (r.Regen(next)[pitches[timePt]])
                     {
                         progress.Add(next);
+                        ModifyHappiness(ref next);
                         result.Add(MakeChord(next, result, pitches[timePt]));
                         hasAdded = true;
                     }
@@ -69,6 +69,7 @@ namespace ConcordV3.Concord
                     {
                         next = Progress2(pitches[timePt]);
                         progress.Add(next);
+                        ModifyHappiness(ref next);
                         result.Add(MakeChord(next, result, pitches[timePt]));
                         hasAdded = true;
                     }
@@ -167,6 +168,7 @@ namespace ConcordV3.Concord
         }
 
         static readonly string[] naturalMajor = { "C", "Dm", "Em", "F", "G", "Am" };
+        static readonly string[] naturalMinor = { "Am", "Dm", "C", "Dm", "Em", "F" };
         public string Progress2(int pitch)
         {
             ChordRegen r = new ChordRegen();
@@ -189,9 +191,11 @@ namespace ConcordV3.Concord
         {
             if (sad > happy)
             {
-                if (chord == "F" || (Helper.RandomBoolean(sad - happy) && chord.Length == 1))
+                if ((Helper.RandomBoolean(sad - happy) && chord.Length == 1))
                 {
-                    chord += "m";
+                    for (int i = 0; i < 6; i++)
+                        if (naturalMajor[i] == chord)
+                            chord = naturalMinor[i];
                 }
             }
         }
