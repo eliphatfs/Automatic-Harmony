@@ -8,19 +8,38 @@ namespace ConcordV3.Concord
 {
     public class GenerateWithMainMelody
     {
-        double happy = 1;
-        double sad = 0;
+        double happy = 0;
+        double sad = 1;
         public List<int>[] Apply(int[] pitches, int[] time)
         {
             List<List<int>> result = new List<List<int>>();
-            List<List<int>> identity = new List<List<int>>();
+            //List<List<int>> identity = new List<List<int>>();
             List<string> progress = new List<string>();
             int tMelody = 0;
             int timePt = -1;
             int totalTime = time.Sum();
 
+            int nextProgressCD = 0, breakChordPoint = -1;
+
             for (int t = 0; t < totalTime; t++)
             {
+                if (nextProgressCD > 0 && timePt < pitches.Length - 2)
+                {
+                    nextProgressCD--;
+                    result.Add(new List<int>());
+                    tMelody++;
+                    if (timePt == -1 || tMelody >= time[timePt])
+                    {
+                        timePt++;
+                        tMelody = 0;
+                    }
+                    result[result.Count - 1].Add(pitches[timePt]);
+                    if (nextProgressCD == 0)
+                    {
+                        Expansion.BreakChordsTimely(result, breakChordPoint, t - breakChordPoint);
+                    }
+                    continue;
+                }
                 bool hasAdded = false;
                 tMelody++;
                 if (timePt == -1 || tMelody >= time[timePt])
@@ -50,6 +69,11 @@ namespace ConcordV3.Concord
                             progress.Add(next);
                             ModifyHappiness(ref next);
                             result.Add(MakeChord(next, result, pitches[timePt]));
+                            if (sad > happy)
+                            {
+                                nextProgressCD = 6;
+                                breakChordPoint = t;
+                            }
                             hasAdded = true;
                         }
                     }
@@ -91,7 +115,7 @@ namespace ConcordV3.Concord
             ChordRegen r = new ChordRegen();
             NoteOmission o = new NoteOmission();
             bool[] full = r.Regen(name, highlimit: pitch);
-            o.Omit(full, prev, NoteNotions.GetPlaceInOctave(name), 3);
+            o.Omit(full, prev, NoteNotions.GetPlaceInOctave(name), happy > sad ? 3 : 4);
             full[pitch] = true;
             List<int> chord = new List<int>();
             for (int i = 0; i < full.Length; i++)
