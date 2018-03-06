@@ -17,5 +17,23 @@ namespace ConcordV3.Concord
                 root += 12;
             }
         }
+
+        public static void BreakChordsTimely(List<List<int>> toModify, int point, int expandLength, int keep = 0)
+        {
+            List<int> chordAtPoint = toModify[point];
+            chordAtPoint.Sort();
+            int step = expandLength / (chordAtPoint.Count - 1 - keep);
+            int breakcount = chordAtPoint.Count - 1 - keep;
+            for (int i = point, j = 0; j < breakcount; i += step, j++)
+            {
+                int note = chordAtPoint[keep];
+                chordAtPoint.RemoveAt(keep);
+                for (int k = i; k < i + step; k++)
+                {
+                    List<int> current = toModify[k];
+                    current.Add(note);
+                }
+            }
+        }
     }
 }
