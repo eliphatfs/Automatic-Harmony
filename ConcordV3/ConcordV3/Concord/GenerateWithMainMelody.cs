@@ -8,8 +8,8 @@ namespace ConcordV3.Concord
 {
     public class GenerateWithMainMelody
     {
-        double happy = 0;
-        double sad = 1;
+        double happy = 1;
+        double sad = 0;
         public List<int>[] Apply(int[] pitches, int[] time)
         {
             List<List<int>> result = new List<List<int>>();

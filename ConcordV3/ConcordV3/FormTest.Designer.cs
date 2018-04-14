@@ -30,6 +30,7 @@
         {
             this.buttonTestLittleStar = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.buttonTest2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonTestLittleStar
@@ -50,11 +51,22 @@
             this.textBox1.Size = new System.Drawing.Size(526, 219);
             this.textBox1.TabIndex = 1;
             // 
+            // buttonTest2
+            // 
+            this.buttonTest2.Location = new System.Drawing.Point(158, 12);
+            this.buttonTest2.Name = "buttonTest2";
+            this.buttonTest2.Size = new System.Drawing.Size(75, 23);
+            this.buttonTest2.TabIndex = 2;
+            this.buttonTest2.Text = "Test2";
+            this.buttonTest2.UseVisualStyleBackColor = true;
+            this.buttonTest2.Click += new System.EventHandler(this.buttonTest2_Click);
+            // 
             // FormTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(551, 273);
+            this.Controls.Add(this.buttonTest2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.buttonTestLittleStar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -70,6 +82,7 @@
 
         private System.Windows.Forms.Button buttonTestLittleStar;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button buttonTest2;
     }
 }
 
